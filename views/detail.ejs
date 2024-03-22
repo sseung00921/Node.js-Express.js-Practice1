@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <h2><%= postInfo.title %></h2>
+        <p><%= moment(postInfo.createdAt).format("YYYY MMMM Do, HH:mm") %></p>
+        <p><%= postInfo.content %> </p>
+        <button id="edit" data-post_num="<%= postInfo.postNum %>">수정하기</button>
+        <button id="delete" data-post_num="<%= postInfo.postNum %>">삭제하기</button>
+    </div>
+
+
+    <script>
+        $("#edit").click((e) => {
+            location.href = "/post/edit/" + e.target.dataset.post_num
+        })
+        $("#delete").click((e) => {
+            $.ajax({
+                    method: "delete",
+                    url: "/post/delete",
+                    data: {
+                        postNum: e.target.dataset.post_num
+                    }
+                })
+                .done((response) => {
+                    //요청이 성공했을 때 수행할 코드
+                    alert("글이 삭제되었습니다.")
+                    location.href = "/"
+                })
+                .fail((xhr, status, err) => {
+                    //요청이 실패했을 때 수행할 코드
+                    alert("글을 삭제하는 데 실패하였습니다.")
+                    location.href = "/"
+                })
+        })
+    </script>
+</body>
+
+</html>
